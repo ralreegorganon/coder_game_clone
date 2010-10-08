@@ -5,17 +5,18 @@ class Level < GameState
   def setup
     self.input = {:escape => :exit, :e => :edit }
     
-    self.viewport.game_area = [0,0,1000,400]
+    self.viewport.game_area = [0,0,1000,300]
     
     @file = File.join(ROOT, "level1.yml")
     load_game_objects(:file => @file)
     
-    @grid = [16,16]
+    @grid = [10,10]
     self.viewport.lag = 0.95
-    @player = Player.create(:x => 40, :y => 200)
+    @player = Player.create(:x => 100, :y => 200)
+    
+    self.viewport.center_around(@player)
         
-    @game_object_map = GameObjectMap.new(:game_objects => Block.all, :grid => @grid)
-
+    @game_object_map = GameObjectMap.new(:game_objects => Block.all + Door.all + Desk.all, :grid => @grid)
   end
   
   def edit
@@ -25,6 +26,11 @@ class Level < GameState
   def update
     super
     self.viewport.center_around(@player)
+  end
+  
+  def draw
+    fill(Color::WHITE)
+    super
   end
 end
 

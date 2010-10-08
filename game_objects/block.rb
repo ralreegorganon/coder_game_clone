@@ -3,14 +3,7 @@ class Block < GameObject
   trait :collision_detection
   
   def setup
-    @image = Image["Earth.png"]
-  end
-  
-  def self.solid
-    all.select { |block| block.alpha == 255 }
-  end
-
-  def self.inside_viewport
-    all.select { |block| block.game_state.viewport.inside?(block) }
+    @image = Image["Tile.png"]
+    cache_bounding_box
   end
 end

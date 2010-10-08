@@ -7,7 +7,7 @@ require_rel 'game_states/*'
 
 class Game < Window
   def intialize
-    super(1000,400)
+    super(1000,300)
   end
   
   def setup

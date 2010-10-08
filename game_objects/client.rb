@@ -1,17 +1,10 @@
-class Player < GameObject
+class Client < GameObject
   trait :bounding_box, :scale => 0.8, :debug => false
   traits :collision_detection, :timer, :velocity
   
   def setup
-    self.input = {
-      :holding_left => :move_left,
-      :holding_right => :move_right,
-      :up => :jump,
-      :f => :use
-    }
-    
     @animations = Hash.new
-    @animations[:full] = Animation.new(:file => "Player.png", :size => 50)   
+    @animations[:full] = Animation.new(:file => "Client.png", :size => 50)   
     @animations[:running] = @animations[:full][0..2]
     @animations[:jumping] = @animations[:full][3..3] 
     @animations[:standing] = @animations[:full][0..0]
@@ -27,8 +20,6 @@ class Player < GameObject
     self.rotation_center = :bottom_center
         
     update
-    
-    cache_bounding_box
   end
   
   def move_left
@@ -48,32 +39,17 @@ class Player < GameObject
     @animation = @animations[:jumping]
   end
   
-  def use
-    objs = [$window.current_game_state.game_object_map.at(self.x+26, self.y-25), $window.current_game_state.game_object_map.at(self.x-26, self.y-25)].flatten 
-
-    objs.each do |obj|
-      obj.use if obj.respond_to? :use
-    end
-  end
-  
   def move(x,y)
     self.x += x    
-    
-    self.each_collision(Block) do |me, block|
+    self.each_collision(Block) do |me, stone_wall|
       self.x = previous_x
       break
     end
-    
-    self.each_collision(Door) do |me, door|
-      self.x = previous_x if door.locked
-    end
-    
     self.y += y
   end
   
   def update 
     @image = @animation.next
-    
     self.each_collision(Block) do |me, stone_wall|
       if self.velocity_y < 0  # Hitting the ceiling
         me.y = stone_wall.bb.bottom + me.image.height * self.factor_y
