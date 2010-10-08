@@ -12,7 +12,7 @@ class Player < GameObject
     
     @animations = Hash.new
     @animations[:full] = Animation.new(:file => "Player.png", :size => 50)   
-    @animations[:running] = @animations[:full][0..2]
+    @animations[:running] = @animations[:full][1..2]
     @animations[:jumping] = @animations[:full][3..3] 
     @animations[:standing] = @animations[:full][0..0]
     @animation = @animations[:standing]

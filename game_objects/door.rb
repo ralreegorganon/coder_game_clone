@@ -11,6 +11,7 @@ class Door < GameObject
   end
   
   def use
+    $window.game_state_manager.push_game_state Popup.new(:text => 'You must give the answer in order to pass. Hahahah!')
     return if not @locked
     @locked = false
     @image = Image["unlocked_door.png"]
